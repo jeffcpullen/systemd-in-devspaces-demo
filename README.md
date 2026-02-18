@@ -1,6 +1,6 @@
-# Field Content
+# Systemd in Dev Spaces Demo
 
-Self-service platform for developing RHDP Catalog Items using GitOps patterns.
+Deploy a demo environment that allows for Systemd in Dev Spaces
 
 ## Overview
 
