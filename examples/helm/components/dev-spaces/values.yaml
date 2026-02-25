@@ -1,0 +1,11 @@
+# Operator installation via OLM
+operator:
+  # Set to true to install the operator
+  # Set to false if operator is already installed on cluster
+  enabled: true
+  name: devspaces
+  namespace: openshift-operators
+  channel: stable
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+  installPlanApproval: Automatic

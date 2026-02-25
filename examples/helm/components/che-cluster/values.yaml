@@ -1,0 +1,24 @@
+# Demo application settings
+demo:
+  enabled: true
+  namespace: devspaces
+  appName: devspaces
+
+# User information for RHDP integration
+userInfo:
+  enabled: true
+  title: "Dev Spaces CheCluster"
+  instructions: "Access the Showroom lab guide, then click the nine square icon in the top left of the OpenShift console and select Dev Spaces."
+
+# Injected by parent chart
+deployer:
+  domain: ""
+
+# For userinfo showroom_url
+showroom:
+  enabled: true
+  namespace: showroom
+
+# For userinfo operator_name
+operator:
+  name: devspaces

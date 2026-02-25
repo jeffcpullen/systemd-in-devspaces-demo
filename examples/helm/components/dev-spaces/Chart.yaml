@@ -1,0 +1,6 @@
+apiVersion: v2
+name: dev-spaces
+description: OLM operator subscription (Dev Spaces)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
