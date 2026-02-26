@@ -1,0 +1,21 @@
+{{- if .Values.machineconfig.enabled }}
+
+---
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker
+  name: {{ .Values.machineconfig.name }}-cgroup
+spec:
+  config:
+    ignition:
+      version: 3.5.0
+    storage:
+      files:
+        - contents:
+            compression: gzip
+            source: data:;base64,H4sIAAAAAAAC/3zNsWrEMBAE0F5fIVRbMqR3l9J/YIxRNou9WN4Nq1WM/z7k8JV31TDMg5lASZI2NjrwmTWBNp7dXRcVMT/40Gvj/n8KLpciJ34vmVksGwlXP/jJeR9IEghbJkatyTQDxnpVyKWE7gZ7+0JltMcVRUmf+EuA9TUYifdR1jcCVpX28xEPaWxxI9SssF1Rz9C52f0FAAD//0wgAiPqAAAA
+          mode: 420
+          overwrite: true
+          path: /etc/crio/crio.conf.d/99-cic-systemd
+{{- end }}

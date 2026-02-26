@@ -6,7 +6,7 @@ kind: MachineConfig
 metadata:
   labels:
     machineconfiguration.openshift.io/role: {{ .Values.machineconfig.nodeRole }}
-  name: {{ .Values.machineconfig.name }}
+  name: {{ .Values.machineconfig.name }}-selinux
 spec:
   config:
     ignition:
