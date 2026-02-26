@@ -1,0 +1,10 @@
+{{- if .Values.checluster.enabled }}
+---
+# Demo application namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.checluster.namespace }}
+  labels:
+    demo.redhat.com/application: {{ .Values.checluster.appName | quote }}
+{{- end }}

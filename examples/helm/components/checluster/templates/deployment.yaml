@@ -1,0 +1,59 @@
+{{- if .Values.checluster.enabled }}
+---
+apiVersion: org.eclipse.che/v2
+kind: CheCluster
+metadata:
+  name: {{ .Values.checluster.appName }}
+  namespace: {{ .Values.checluster.namespace }}
+  labels:
+    demo.redhat.com/application: {{ .Values.checluster.appName }}
+    app: {{ .Values.checluster.appName }}
+spec:
+  components:
+    cheServer:
+      debug: false
+      logLevel: INFO
+    metrics:
+      enable: true
+    pluginRegistry:
+      openVSXURL: https://open-vsx.org
+    devfileRegistry:
+      disableInternalRegistry: true
+  containerRegistry: {}
+  devEnvironments:
+    startTimeoutSeconds: 600
+    secondsOfRunBeforeIdling: -1
+    maxNumberOfWorkspacesPerUser: -1
+    maxNumberOfRunningWorkspacesPerUser: 5
+    disableContainerRunCapabilities: false
+    security:
+    containerRunConfiguration:
+      openShiftSecurityContextConstraint: nested-podman-systemd
+      containerSecurityContext:
+        allowPrivilegeEscalation: true
+        procMount: Unmasked
+        runAsUser: 1000
+        capabilities:
+          add:
+          - SETGID
+          - SETUID
+          - CHOWN
+      workspacesPodAnnotations:
+        io.kubernetes.cri-o.Devices: "/dev/fuse,/dev/net/tun"
+        io.kubernetes.cri-o.cgroup2-mount-hierarchy-rw: 'true'
+    defaultComponents:
+    - name: dev-tools
+      container:
+        image: quay.io/cgruver0/che/dev-tools:latest
+        memoryLimit: 6Gi
+        mountSources: true
+    defaultEditor: che-incubator/che-code/latest
+    defaultNamespace:
+      autoProvision: true
+      template: <username>-devspaces
+    secondsOfInactivityBeforeIdling: 1800
+    storage:
+      pvcStrategy: per-workspace
+  gitServices: {}
+  networking: {}
+{{- end }}

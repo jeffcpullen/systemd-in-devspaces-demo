@@ -7,7 +7,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Release.Name }}-operator
+  name: {{ .Release.Name }}-devspaces
   namespace: {{ .Values.argocd.namespace }}
   labels:
     demo.redhat.com/application: "field-content"
@@ -40,12 +40,12 @@ spec:
       - CreateNamespace=true
 {{- end }}
 
-{{- if .Values.components.operator.enabled }}
+{{- if .Values.components.checluster.enabled }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Release.Name }}-operator
+  name: {{ .Release.Name }}-checluster
   namespace: {{ .Values.argocd.namespace }}
   labels:
     demo.redhat.com/application: "field-content"
@@ -56,67 +56,27 @@ spec:
   source:
     repoURL: {{ .Values.gitops.repoUrl }}
     targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/components/operator
-    helm:
-      valuesObject:
-        operator:
-          enabled: {{ .Values.components.operator.enabled }}
-          name: {{ .Values.components.operator.name }}
-          namespace: {{ .Values.components.operator.namespace }}
-          channel: {{ .Values.components.operator.channel }}
-          source: {{ .Values.components.operator.source }}
-          sourceNamespace: {{ .Values.components.operator.sourceNamespace }}
-          installPlanApproval: {{ .Values.components.operator.installPlanApproval }}
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: {{ .Values.components.operator.namespace }}
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-{{- end }}
-
-{{- if .Values.components.helloWorld.enabled }}
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: {{ .Release.Name }}-hello-world
-  namespace: {{ .Values.argocd.namespace }}
-  labels:
-    demo.redhat.com/application: "field-content"
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: {{ .Values.argocd.project }}
-  source:
-    repoURL: {{ .Values.gitops.repoUrl }}
-    targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/components/hello-world
+    path: {{ .Values.gitops.basePath }}/components/checluster
     helm:
       valuesObject:
         demo:
-          enabled: {{ .Values.components.helloWorld.enabled }}
-          namespace: {{ .Values.components.helloWorld.namespace }}
-          appName: {{ .Values.components.helloWorld.appName }}
-          replicas: {{ .Values.components.helloWorld.replicas }}
-          image: {{ .Values.components.helloWorld.image }}
+          enabled: {{ .Values.components.checluster.enabled }}
+          namespace: {{ .Values.components.checluster.namespace }}
+          appName: {{ .Values.components.checluster.appName }}
         userInfo:
-          enabled: {{ .Values.components.helloWorld.userInfo.enabled }}
-          title: {{ .Values.components.helloWorld.userInfo.title | quote }}
-          instructions: {{ .Values.components.helloWorld.userInfo.instructions | quote }}
+          enabled: {{ .Values.components.checluster.userInfo.enabled }}
+          title: {{ .Values.components.checluster.userInfo.title | quote }}
+          instructions: {{ .Values.components.checluster.userInfo.instructions | quote }}
         deployer:
           domain: {{ .Values.deployer.domain | quote }}
         showroom:
           enabled: {{ .Values.components.showroom.enabled }}
           namespace: {{ .Values.components.showroom.namespace }}
         operator:
-          name: {{ .Values.components.operator.name }}
+          name: {{ .Values.components.devspaces.name }}
   destination:
     server: https://kubernetes.default.svc
-    namespace: {{ .Values.components.helloWorld.namespace }}
+    namespace: {{ .Values.components.checluster.namespace }}
   syncPolicy:
     automated:
       prune: true
@@ -169,8 +129,8 @@ spec:
         deployer:
           domain: {{ .Values.deployer.domain | quote }}
         demo:
-          namespace: {{ .Values.components.helloWorld.namespace }}
-          appName: {{ .Values.components.helloWorld.appName }}
+          namespace: {{ .Values.components.checluster.namespace }}
+          appName: {{ .Values.components.checluster.appName }}
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ .Values.components.showroom.namespace }}

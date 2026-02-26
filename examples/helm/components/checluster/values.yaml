@@ -1,5 +1,5 @@
 # Demo application settings
-demo:
+checluster:
   enabled: true
   namespace: devspaces
   appName: devspaces
