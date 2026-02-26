@@ -20,6 +20,11 @@ argocd:
 # ============================================================
 components:
 
+  machineconfig:
+    enabled: true
+    name: selinux-patch-audit-log-worker
+    nodeRole: worker
+
   # --- Operator Installation ---
   devspaces:
     # Set to true to install the operator via OLM

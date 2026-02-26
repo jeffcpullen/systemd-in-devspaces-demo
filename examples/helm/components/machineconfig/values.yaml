@@ -1,0 +1,7 @@
+# Operator installation via OLM
+machineconfig:
+  # Set to true to install the operator
+  # Set to false if operator is already installed on cluster
+  enabled: true
+  name: selinux-patch-audit-log-worker
+  nodeRole: worker

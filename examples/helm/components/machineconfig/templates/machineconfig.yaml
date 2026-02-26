@@ -1,0 +1,40 @@
+{{- if .Values.machineconfig.enabled }}
+
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: {{ .Values.machineconfig.nodeRole }}
+  name: {{ .Values.machineconfig.name }}
+spec:
+  config:
+    ignition:
+      version: 3.5.0
+    storage:
+      files:
+        - contents:
+            compression: gzip
+            source: data:;base64,H4sIAAAAAAAC/4TNwarCMBCF4X2eYuDuL7q19FlCSI916HRSMxO0iO/upohCwbP++M9chiYgg7C2e1yS50tMbWCPUkY6/h+6UHFtXEGPQNt8XUC5qCdW1AgdWRG9e4MsyYwULqzT1rOSJzipzDbGCklrF57hr//cTpS+QB+SSLntOYOcT78vXwEAAP//oyv6LfIAAAA=
+          mode: 420
+          overwrite: true
+          path: /etc/selinux_patch_audit_log.te
+    systemd:
+      units:
+        - contents: |
+            [Unit]
+            Description=Modify SeLinux Type container_engine_t
+            DefaultDependencies=no
+            After=kubelet.service
+
+            [Service]
+            Type=oneshot
+            RemainAfterExit=yes
+            ExecStart=bash -c "/bin/checkmodule -M -m -o /tmp/selinux_patch_audit_log.mod /etc/selinux_patch_audit_log.te && /bin/semodule_package -o /tmp/selinux_patch_audit_log.pp -m /tmp/selinux_patch_audit_log.mod && /sbin/semodule -i /tmp/selinux_patch_audit_log.pp"
+            TimeoutSec=0
+
+            [Install]
+            WantedBy=multi-user.target
+          enabled: true
+          name: systemd-selinux-patch-audit-log.service
+{{- end }}

@@ -1,6 +1,36 @@
 # App of Apps Pattern
 # This template generates ArgoCD Applications for each enabled component
+{{- if .Values.components.machineconfig.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-machineconfig
+  labels:
+    demo.redhat.com/application: "field-content"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.gitops.repoUrl }}
+    targetRevision: {{ .Values.gitops.revision }}
+    path: {{ .Values.gitops.basePath }}/components/machineconfig
+    helm:
+      valuesObject:
+        machineconfig:
+          enabled: {{ .Values.components.machineconfig.enabled }}
+          name: {{ .Values.components.machineconfig.name }}
+          nodeRole: {{ .Values.components.machineconfig.nodeRole }}
 
+  destination:
+    server: https://kubernetes.default.svc
+    # namespace: {{ .Values.components.machineconfig.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}
 
 {{- if .Values.components.devspaces.enabled }}
 ---
