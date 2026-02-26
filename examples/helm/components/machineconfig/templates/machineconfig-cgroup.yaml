@@ -1,10 +1,11 @@
 {{- if .Values.machineconfig.enabled }}
 
 ---
+apiVersion: machineconfiguration.openshift.io/v1
 kind: MachineConfig
 metadata:
   labels:
-    machineconfiguration.openshift.io/role: worker
+    machineconfiguration.openshift.io/role: {{ .Values.machineconfig.nodeRole }}
   name: {{ .Values.machineconfig.name }}-cgroup
 spec:
   config:
