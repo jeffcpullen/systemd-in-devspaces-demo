@@ -1,5 +1,35 @@
 # App of Apps Pattern
 # This template generates ArgoCD Applications for each enabled component
+{{ if .Values.components.customscc.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-customscc
+  labels:
+    demo.redhat.com/application: "field-content"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.gitops.repoUrl }}
+    targetRevision: {{ .Values.gitops.revision }}
+    path: {{ .Values.gitops.basePath }}/components/customscc
+    helm:
+      valuesObject:
+        machineconfig:
+          enabled: {{ .Values.components.customscc.enabled }}
+          name: {{ .Values.components.customscc.name }}
+
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}
+
 {{- if .Values.components.machineconfig.enabled }}
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -25,7 +55,7 @@ spec:
 
   destination:
     server: https://kubernetes.default.svc
-    # namespace: {{ .Values.components.machineconfig.namespace }}
+
   syncPolicy:
     automated:
       prune: true
