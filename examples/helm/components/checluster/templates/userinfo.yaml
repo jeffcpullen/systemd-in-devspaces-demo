@@ -13,7 +13,7 @@ data:
   demo_title: {{ .Values.userInfo.title | quote }}
   access_instructions: {{ .Values.userInfo.instructions | quote }}
   deployment_type: "helm"
-  operator_name: {{ .Values.devspaces.name | quote }}
+  operator_name: {{ .Values.operator.name | quote }}
   demo_app: {{ .Values.checluster.appName | quote }}
   demo_namespace: {{ .Values.checluster.namespace | quote }}
   {{- if .Values.showroom.enabled }}
