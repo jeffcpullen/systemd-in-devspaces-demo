@@ -6,6 +6,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ .Release.Name }}-customscc
+  namespace: {{ .Values.argocd.namespace }}
   labels:
     demo.redhat.com/application: "field-content"
   finalizers:
@@ -36,6 +37,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ .Release.Name }}-machineconfig
+  namespace: {{ .Values.argocd.namespace }}
   labels:
     demo.redhat.com/application: "field-content"
   finalizers:
