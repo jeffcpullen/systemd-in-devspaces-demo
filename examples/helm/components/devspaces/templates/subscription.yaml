@@ -1,0 +1,21 @@
+{{- if .Values.devspaces.enabled }}
+{{- $existingSub := lookup "operators.coreos.com/v1alpha1" "Subscription" .Values.devspaces.namespace .Values.devspaces.name }}
+{{- if not $existingSub.metadata }}
+---
+# Install operator via OLM Subscription
+# Skipped automatically if subscription already exists
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: {{ .Values.devspaces.name }}
+  namespace: {{ .Values.devspaces.namespace }}
+  labels:
+    demo.redhat.com/application: "operator"
+spec:
+  channel: {{ .Values.devspaces.channel }}
+  installPlanApproval: {{ .Values.devspaces.installPlanApproval }}
+  name: {{ .Values.devspaces.name }}
+  source: {{ .Values.devspaces.source }}
+  sourceNamespace: {{ .Values.devspaces.sourceNamespace }}
+{{- end }}
+{{- end }}

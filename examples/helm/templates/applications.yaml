@@ -18,7 +18,7 @@ spec:
   source:
     repoURL: {{ .Values.gitops.repoUrl }}
     targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/components/operator
+    path: {{ .Values.gitops.basePath }}/components/devspaces
     helm:
       valuesObject:
         operator:

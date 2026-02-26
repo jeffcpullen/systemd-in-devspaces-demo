@@ -21,7 +21,7 @@ argocd:
 components:
 
   # --- Operator Installation ---
-  dev-spaces:
+  devspaces:
     # Set to true to install the operator via OLM
     # Set to false if operator is already installed on cluster
     enabled: true
