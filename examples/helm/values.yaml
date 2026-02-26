@@ -20,9 +20,9 @@ argocd:
 # ============================================================
 components:
 
-customscc:
-  enabled: true
-  name: nested-podman-systemd
+  customscc:
+    enabled: true
+    name: nested-podman-systemd
 
   machineconfig:
     enabled: true
