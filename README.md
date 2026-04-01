@@ -26,6 +26,14 @@ Components deployed:
 
 This is a helm chart that configures and deploys ADW with changes to the cluster that will likely make it unsupportable and unupgradable. It is focused on feature development and testing over supportability.
 
+Components deployed:
+
+* Red Hat OpenShift Dev Spaces operator
+* CheCluster configured for Ansible Development
+* Custom SecurityContextConstraints with additional capabilities and selinux context
+* Custom machineconfig for enabling user cgroup capability
+* Custom machineconfig for updating selinux label
+
 ## How to use
 
 * Login to Red Hat Demo Platform
