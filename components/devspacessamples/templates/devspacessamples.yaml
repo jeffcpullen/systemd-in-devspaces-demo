@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 data:
-  exercise-samples.json: {{ .Values.devspacessamples.jsonContent }}
+  exercise-samples.json: {{ .Values.devspacessamples.jsonContent | toJson }}
 metadata:
   name: {{ .Values.configmap.name }}
   namespace: {{ .Values.configmap.namespace }}
