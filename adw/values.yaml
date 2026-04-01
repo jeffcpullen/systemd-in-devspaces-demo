@@ -8,7 +8,7 @@ gitops:
   # Repository containing the component charts
   repoUrl: "https://github.com/jeffcpullen/systemd-in-devspaces-demo.git"
   revision: "main"
-  basePath: "examples/helm"
+  basePath: "components"
 
 # ArgoCD settings
 argocd:
@@ -21,11 +21,11 @@ argocd:
 components:
 
   customscc:
-    enabled: true
+    enabled: false
     name: nested-podman-systemd
 
   machineconfig:
-    enabled: true
+    enabled: false
     name: devspaces-ansible-machineconfigs
     nodeRole: worker
 
