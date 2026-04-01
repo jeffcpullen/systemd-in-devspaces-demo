@@ -41,6 +41,14 @@ components:
     sourceNamespace: openshift-marketplace
     installPlanApproval: Automatic
 
+  devspacesSamples:
+    enabled: true
+    name: getting-started-samples
+    namespace: 'devspaces'
+    componentLabel: 'getting-started-samples'
+    # Add json content for the Dev Spaces samples
+    # jsonContent:
+
   # --- Hello World Demo Application ---
   checluster:
     enabled: true
