@@ -1,87 +1,49 @@
 # Systemd in Dev Spaces Demo
 
-Deploy a demo environment that allows for Systemd in Dev Spaces
+This repository provides helm charts using an app-of-apps methodology to configure Red Hat OpenShift to run Ansible Development Workspaces.
+
+> [!WARNING]
+> **DO NOT DEPLOY TO PRODUCTION OCP CLUSTERS** Use this at your own risk. This code may introduce breaking changes without warning, may render Red Hat OpenShift clusters inoperable, unsupported and non-functional.
 
 ## Overview
 
-Create demos and labs for Red Hat Demo Platform without deep AgnosticD knowledge:
+Ansible Development Workspaces are a web based development environment pre-configured for Ansible development and testing. Red Hat OpenShift Dev Spaces provides a modern IDE with relevant extensions while Red Hat OpenShift provides infrastructure for hosting testing infrastructure for tools like Molecule.
 
-1. Clone this template repository
-2. Choose an example (`helm/` or `ansible/`) as your starting point
-3. Customize the deployment for your use case
-4. Push to your Git repository
-5. Order the **Field Content CI** from RHDP with your repository URL
+## Variants
 
-ArgoCD deploys your content, and the platform handles health monitoring and data flow back to AgnosticD.
+This repository provides two helm charts for testing.
 
-## Getting Started
+### Ansible Development Workspaces (adw)
 
-### Choose Your Pattern
+This is the supportable helm chart that configures and deploys ADW without making changes that would prevent cluster upgrades or be unsupportable. It is focused on supportability over features.
 
-| Pattern | Use When |
-|---------|----------|
-| [examples/helm/](examples/helm/) | Deployment can be expressed as Kubernetes manifests with Helm templating |
-| [examples/ansible/](examples/ansible/) | You need wait-for-ready, secret generation, API calls, or conditional logic |
+Components deployed:
 
-### Quick Start
+* Red Hat OpenShift Dev Spaces operator
+* CheCluster configured for Ansible Development
 
-```bash
-# Clone this template
-git clone https://github.com/rhpds/field-sourced-content-template.git my-content
-cd my-content
+### Ansible Development Workspaces with Nested SystemD (nested-systemd)
 
-# Choose an example and start customizing
-cd examples/helm      # or examples/ansible
-# Edit values.yaml and templates as documented in each example's README
-```
+This is a helm chart that configures and deploys ADW with changes to the cluster that will likely make it unsupportable and unupgradable. It is focused on feature development and testing over supportability.
 
-## How It Works
+Components deployed:
 
-```
-Your Git Repo                    OpenShift Cluster
-┌─────────────┐                 ┌─────────────────────────────┐
-│ Helm Chart  │──── ArgoCD ────▶│ Your Workload               │
-│ (templates, │                 │ (operators, apps, showroom) │
-│  values)    │                 └─────────────────────────────┘
-└─────────────┘                           │
-                                          ▼
-                                ConfigMap with demo.redhat.com/userinfo
-                                          │
-                                          ▼
-                                    AgnosticD picks up user info
-```
+* Red Hat OpenShift Dev Spaces operator
+* CheCluster configured for Ansible Development
+* Custom SecurityContextConstraints with additional capabilities and selinux context
+* Custom machineconfig for enabling user cgroup capability
+* Custom machineconfig for updating selinux label
 
-## RHDP Integration
+## How to use
 
-Label resources for platform integration:
+* Login to Red Hat Demo Platform
+* From the catalog order the "Field Sourced Content - OpenShift Base"
+* In the Order form click the "Existing Gitops Repo?" checkbox
+* Enter "https://github.com/jeffcpullen/systemd-in-devspaces-demo.git" in the Gitops Repo field
+* Enter "main" in the GitOps Revision field
+* Enter "adw" or "nested-systemd" (depending on need) in the GitOps Path
+* Finish filling out the Order form and click the "Order" button to start provisioning
 
-```yaml
-# Health monitoring
-metadata:
-  labels:
-    demo.redhat.com/application: "my-demo"
+## Contributing
 
-# Pass data back to AgnosticD (URLs, credentials, etc.)
-metadata:
-  labels:
-    demo.redhat.com/userinfo: ""
-```
-
-## Documentation
-
-- [examples/helm/README.md](examples/helm/README.md) - Helm deployment guide
-- [examples/ansible/README.md](examples/ansible/README.md) - Ansible deployment guide
-- [docs/ansible-developer-guide.md](docs/ansible-developer-guide.md) - In-depth Ansible patterns
-- [docs/SHOWROOM-UPDATE-SPEC.md](docs/SHOWROOM-UPDATE-SPEC.md) - Showroom maintenance guide
-
-## Repository Structure
-
-```
-field-content/
-├── examples/
-│   ├── helm/        # Helm-based deployment example
-│   └── ansible/     # Ansible-based deployment example
-├── roles/
-│   └── ocp4_workload_field_content/  # AgnosticD workload role
-└── docs/            # Developer guides and diagrams
-```
+This repository will likely be short lived and move to a different location in the future. Contributions / issues are welcome but may not be addressed until this code is moved to its proper location.

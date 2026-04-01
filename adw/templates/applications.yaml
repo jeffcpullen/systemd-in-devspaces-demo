@@ -16,7 +16,7 @@ spec:
   source:
     repoURL: {{ .Values.gitops.repoUrl }}
     targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/components/customscc
+    path: {{ .Values.gitops.basePath }}/customscc
     helm:
       valuesObject:
         machineconfig:
@@ -47,7 +47,7 @@ spec:
   source:
     repoURL: {{ .Values.gitops.repoUrl }}
     targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/components/machineconfig
+    path: {{ .Values.gitops.basePath }}/machineconfig
     helm:
       valuesObject:
         machineconfig:
@@ -80,7 +80,7 @@ spec:
   source:
     repoURL: {{ .Values.gitops.repoUrl }}
     targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/components/devspaces
+    path: {{ .Values.gitops.basePath }}/devspaces
     helm:
       valuesObject:
         operator:
@@ -118,7 +118,7 @@ spec:
   source:
     repoURL: {{ .Values.gitops.repoUrl }}
     targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/components/checluster
+    path: {{ .Values.gitops.basePath }}/checluster
     helm:
       valuesObject:
         demo:
@@ -163,7 +163,7 @@ spec:
   source:
     repoURL: {{ .Values.gitops.repoUrl }}
     targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/components/showroom
+    path: {{ .Values.gitops.basePath }}/showroom
     helm:
       valuesObject:
         showroom:
