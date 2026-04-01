@@ -41,7 +41,7 @@ components:
     sourceNamespace: openshift-marketplace
     installPlanApproval: Automatic
 
-  devspacesSamples:
+  devspacessamples:
     enabled: true
     name: getting-started-samples
     namespace: 'devspaces'

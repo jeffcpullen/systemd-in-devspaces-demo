@@ -102,12 +102,12 @@ spec:
       - CreateNamespace=true
 {{- end }}
 
-{{ if .Values.components.devspacesSamples.enabled }}
+{{ if .Values.components.devspacessamples.enabled }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Release.Name }}-devspacesSamples
+  name: {{ .Release.Name }}-devspacessamples
   namespace: {{ .Values.argocd.namespace }}
   labels:
     demo.redhat.com/application: "field-content"
@@ -118,17 +118,17 @@ spec:
   source:
     repoURL: {{ .Values.gitops.repoUrl }}
     targetRevision: {{ .Values.gitops.revision }}
-    path: {{ .Values.gitops.basePath }}/devspacesSamples
+    path: {{ .Values.gitops.basePath }}/devspacessamples
     helm:
       valuesObject:
         configmap:
-          enabled: {{ .Values.components.devspacesSamples.enabled }}
-          name: {{ .Values.components.devspacesSamples.name }}
-          namespace: {{ .Values.components.devspacesSamples.namespace }}
-          componentLabel: {{ .Values.components.devspacesSamples.componentLabel }}
-        {{- if .Values.components.devspacesSamples.jsonContent -}}
-        devspacesSamples:
-          jsonContent: {{ .Values.components.devspacesSamples.jsonContent }}
+          enabled: {{ .Values.components.devspacessamples.enabled }}
+          name: {{ .Values.components.devspacessamples.name }}
+          namespace: {{ .Values.components.devspacessamples.namespace }}
+          componentLabel: {{ .Values.components.devspacessamples.componentLabel }}
+        {{- if .Values.components.devspacessamples.jsonContent -}}
+        devspacessamples:
+          jsonContent: {{ .Values.components.devspacessamples.jsonContent }}
         {{- end }}
 
 

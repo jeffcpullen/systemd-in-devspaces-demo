@@ -5,7 +5,7 @@ configmap:
   namespace: 'devspaces'
   componentLabel: 'getting-started-samples'
 
-devspacesSamples:
+devspacessamples:
   jsonContent: |-
     [
     {
