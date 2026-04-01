@@ -1,6 +1,0 @@
-apiVersion: v2
-name: devspacessamples
-description: Custom security context constraint that adds the chown cap to the nested podman scc
-type: application
-version: 0.1.0
-appVersion: "1.0.0"
