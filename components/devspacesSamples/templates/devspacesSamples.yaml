@@ -1,0 +1,15 @@
+{{- if .Values.configmap.enabled }}
+
+---
+apiVersion: v1
+      kind: ConfigMap
+      data:
+        exercise-samples.json: {{ .Values.devspacesSamples.jsonContent }}
+      metadata:
+        name: {{ .Values.configmap.name }}
+        namespace: {{ .Values.configmap.namespace }}
+        labels:
+          app.kubernetes.io/part-of: che.eclipse.org
+          app.kubernetes.io/component: {{ .Values.configmap.componentLabel }}
+
+{{- end }}

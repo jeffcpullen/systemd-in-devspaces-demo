@@ -102,6 +102,45 @@ spec:
       - CreateNamespace=true
 {{- end }}
 
+{{ if .Values.components.devspacesSamples.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-devspacesSamples
+  namespace: {{ .Values.argocd.namespace }}
+  labels:
+    demo.redhat.com/application: "field-content"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.gitops.repoUrl }}
+    targetRevision: {{ .Values.gitops.revision }}
+    path: {{ .Values.gitops.basePath }}/devspacesSamples
+    helm:
+      valuesObject:
+        configmap:
+          enabled: {{ .Values.components.devspacesSamples.enabled }}
+          name: {{ .Values.components.devspacesSamples.name }}
+          namespace: {{ .Values.components.devspacesSamples.namespace }}
+          componentLabel: {{ .Values.components.devspacesSamples.componentLabel }}
+        {{- if .Values.components.devspacesSamples.jsonContent -}}
+        devspacesSamples:
+          jsonContent: {{ .Values.components.devspacesSamples.jsonContent }}
+        {{- end }}
+
+
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}
+
+
 {{- if .Values.components.checluster.enabled }}
 ---
 apiVersion: argoproj.io/v1alpha1
