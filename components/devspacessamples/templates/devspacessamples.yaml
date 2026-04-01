@@ -4,7 +4,7 @@
 apiVersion: v1
       kind: ConfigMap
       data:
-        exercise-samples.json: {{ .Values.devspacessamples.jsonContent }}
+        exercise-samples.json: {{ .Values.devspacessamples.jsonContent | nindent 4 }}
       metadata:
         name: {{ .Values.configmap.name }}
         namespace: {{ .Values.configmap.namespace }}
