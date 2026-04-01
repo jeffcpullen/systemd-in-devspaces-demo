@@ -1,0 +1,205 @@
+# App of Apps Pattern
+# This template generates ArgoCD Applications for each enabled component
+{{ if .Values.components.customscc.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-customscc
+  namespace: {{ .Values.argocd.namespace }}
+  labels:
+    demo.redhat.com/application: "field-content"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.gitops.repoUrl }}
+    targetRevision: {{ .Values.gitops.revision }}
+    path: {{ .Values.gitops.basePath }}/components/customscc
+    helm:
+      valuesObject:
+        machineconfig:
+          enabled: {{ .Values.components.customscc.enabled }}
+          name: {{ .Values.components.customscc.name }}
+
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}
+
+{{- if .Values.components.machineconfig.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-machineconfig
+  namespace: {{ .Values.argocd.namespace }}
+  labels:
+    demo.redhat.com/application: "field-content"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.gitops.repoUrl }}
+    targetRevision: {{ .Values.gitops.revision }}
+    path: {{ .Values.gitops.basePath }}/components/machineconfig
+    helm:
+      valuesObject:
+        machineconfig:
+          enabled: {{ .Values.components.machineconfig.enabled }}
+          name: {{ .Values.components.machineconfig.name }}
+          nodeRole: {{ .Values.components.machineconfig.nodeRole }}
+
+  destination:
+    server: https://kubernetes.default.svc
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}
+
+{{- if .Values.components.devspaces.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-devspaces
+  namespace: {{ .Values.argocd.namespace }}
+  labels:
+    demo.redhat.com/application: "field-content"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.gitops.repoUrl }}
+    targetRevision: {{ .Values.gitops.revision }}
+    path: {{ .Values.gitops.basePath }}/components/devspaces
+    helm:
+      valuesObject:
+        operator:
+          enabled: {{ .Values.components.devspaces.enabled }}
+          name: {{ .Values.components.devspaces.name }}
+          namespace: {{ .Values.components.devspaces.namespace }}
+          channel: {{ .Values.components.devspaces.channel }}
+          source: {{ .Values.components.devspaces.source }}
+          sourceNamespace: {{ .Values.components.devspaces.sourceNamespace }}
+          installPlanApproval: {{ .Values.components.devspaces.installPlanApproval }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.components.devspaces.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+{{- end }}
+
+{{- if .Values.components.checluster.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-checluster
+  namespace: {{ .Values.argocd.namespace }}
+  labels:
+    demo.redhat.com/application: "field-content"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.gitops.repoUrl }}
+    targetRevision: {{ .Values.gitops.revision }}
+    path: {{ .Values.gitops.basePath }}/components/checluster
+    helm:
+      valuesObject:
+        demo:
+          enabled: {{ .Values.components.checluster.enabled }}
+          namespace: {{ .Values.components.checluster.namespace }}
+          appName: {{ .Values.components.checluster.appName }}
+        userInfo:
+          enabled: {{ .Values.components.checluster.userInfo.enabled }}
+          title: {{ .Values.components.checluster.userInfo.title | quote }}
+          instructions: {{ .Values.components.checluster.userInfo.instructions | quote }}
+        deployer:
+          domain: {{ .Values.deployer.domain | quote }}
+        showroom:
+          enabled: {{ .Values.components.showroom.enabled }}
+          namespace: {{ .Values.components.showroom.namespace }}
+        operator:
+          name: {{ .Values.components.devspaces.name }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.components.checluster.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+{{- end }}
+
+{{- if .Values.components.showroom.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}-showroom
+  namespace: {{ .Values.argocd.namespace }}
+  labels:
+    demo.redhat.com/application: "field-content"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: {{ .Values.argocd.project }}
+  source:
+    repoURL: {{ .Values.gitops.repoUrl }}
+    targetRevision: {{ .Values.gitops.revision }}
+    path: {{ .Values.gitops.basePath }}/components/showroom
+    helm:
+      valuesObject:
+        showroom:
+          enabled: {{ .Values.components.showroom.enabled }}
+          namespace: {{ .Values.components.showroom.namespace }}
+          name: {{ .Values.components.showroom.name }}
+          content:
+            repoUrl: {{ .Values.components.showroom.content.repoUrl | quote }}
+            repoRef: {{ .Values.components.showroom.content.repoRef | quote }}
+            antoraPlaybook: {{ .Values.components.showroom.content.antoraPlaybook | quote }}
+            image: {{ .Values.components.showroom.content.image | quote }}
+          nookbag:
+            enabled: {{ .Values.components.showroom.nookbag.enabled }}
+            bundleUrl: {{ .Values.components.showroom.nookbag.bundleUrl | quote }}
+          terminal:
+            enabled: {{ .Values.components.showroom.terminal.enabled }}
+            image: {{ .Values.components.showroom.terminal.image | quote }}
+            resources:
+              requests:
+                cpu: {{ .Values.components.showroom.terminal.resources.requests.cpu | quote }}
+                memory: {{ .Values.components.showroom.terminal.resources.requests.memory | quote }}
+              limits:
+                cpu: {{ .Values.components.showroom.terminal.resources.limits.cpu | quote }}
+                memory: {{ .Values.components.showroom.terminal.resources.limits.memory | quote }}
+        deployer:
+          domain: {{ .Values.deployer.domain | quote }}
+        demo:
+          namespace: {{ .Values.components.checluster.namespace }}
+          appName: {{ .Values.components.checluster.appName }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Values.components.showroom.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+{{- end }}
