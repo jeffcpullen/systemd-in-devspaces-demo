@@ -36,6 +36,8 @@ Components deployed:
 
 ## How to use
 
+### Using Red Hat Demo Platform
+
 * Login to Red Hat Demo Platform
 * From the catalog order the "Field Sourced Content - OpenShift Base"
 * In the Order form click the "Existing Gitops Repo?" checkbox
@@ -43,6 +45,24 @@ Components deployed:
 * Enter "main" in the GitOps Revision field
 * Enter "adw" or "nested-systemd" (depending on need) in the GitOps Path
 * Finish filling out the Order form and click the "Order" button to start provisioning
+
+### Using a Red Hat OpenShift Cluster
+
+* Login to a Red Hat OpenShift (v4.20+) cluster as a user with cluster-admin privs
+* Ensure OpenShift GitOps operator is installed
+* Access OpenShift GitOps console and authenticate as a user with cluster-admin privs
+* Click the "+ NEW APP" icon in the top left
+* Enter "field-content-demo" in the Application Name field
+* Enter "default" in the Project Name field
+* Check the box beside "AUTO-CREATE NAMESPACE"
+* Enter "https://github.com/jeffcpullen/systemd-in-devspaces-demo.git" in the Repository URL field
+* Enter "main" in the Revision field
+* Enter "adw" in the Path field
+* Enter "https://kubernetes.default.svc" in the Cluster URL field
+* Enter "openshift-gitops" in the Namespace field
+* Click "Create"
+* If sync policy was set to Manual, click "Sync Apps" afterwards to apply configurations
+
 
 ## Contributing
 
