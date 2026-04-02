@@ -21,7 +21,7 @@ argocd:
 components:
 
   customscc:
-    enabled: false
+    enabled: true
     name: nested-podman-systemd
 
   machineconfig:
